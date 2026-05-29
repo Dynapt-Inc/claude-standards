@@ -1,49 +1,86 @@
 # Contributing standards
 
-This repo is a Claude Code plugin marketplace. Each "standard", "rule", or
-"skill" is a folder containing a `SKILL.md` file inside the relevant plugin.
+This repo is a Claude Code plugin marketplace. Each standard, rule, or workflow
+is a skill folder inside the relevant plugin under `plugins/`.
 
-## Add a skill
+## Quick start
 
-1. Pick the right plugin under `plugins/` (or add a new one — see below).
-2. Create a folder in that plugin's `skills/` directory, kebab-case named:
-   `plugins/engineering/skills/code-review/`.
-3. Add a `SKILL.md` with YAML frontmatter:
+The `company-core` plugin ships a `plugin-authoring` skill that guides Claude
+through these steps. If you have the plugin installed, just say "I want to add a
+standard for X" and Claude will follow the rules automatically.
 
-   ```markdown
-   ---
-   name: code-review
-   description: Third-person WHAT + WHEN with trigger keywords. Used by Claude to decide when to auto-activate.
-   ---
+## Plugin layout
 
-   # Code Review
+```
+plugins/<plugin>/
+├── .claude-plugin/
+│   └── plugin.json        # manifest — name is the only required field
+├── skills/                # one directory per skill
+│   └── <skill-name>/
+│       ├── SKILL.md       # required
+│       └── reference.md   # optional — link to from SKILL.md for long content
+├── agents/                # optional subagent .md files
+├── hooks/
+│   └── hooks.json         # optional event handlers
+└── scripts/               # optional hook/utility scripts
+```
 
-   ...your standard/rule content...
-   ```
+> `commands/` (legacy flat .md format) is not used here. Use `skills/` only.
+> Only `plugin.json` belongs inside `.claude-plugin/`. Everything else goes at
+> the plugin root.
 
-4. Keep `SKILL.md` focused (aim under ~500 lines). Put long reference material in
-   sibling files (e.g. `reference.md`) and link to them.
-5. Bump the `version` in that plugin's `.claude-plugin/plugin.json` so installed
-   teammates receive the update.
+## Which plugin?
 
-## Add slash commands or agents (optional)
+| Domain | Plugin |
+|---|---|
+| Cross-cutting / applies to everyone | `company-core` |
+| Writing code, PRs, testing, git | `engineering` |
+| System design, ADRs, tech decisions | `architecture` |
+| Content, SEO, social, campaigns | `marketing` |
+| PRDs, user stories, release notes | `product` |
+| SQL, analysis, dashboards | `data` |
 
-- Slash commands: add `.md` files to the plugin's `commands/` directory.
-- Subagents: add `.md` files to the plugin's `agents/` directory.
+## Adding a skill
 
-## Add a new plugin (new team/domain)
+1. Create `plugins/<plugin>/skills/<skill-name>/` (kebab-case).
+2. Add `SKILL.md` with frontmatter + body (see `example-skill/` for the format).
+3. Keep `SKILL.md` focused — aim under ~300 lines. Move long reference material
+   to a sibling `reference.md` and link to it.
+4. Delete `example-skill/` once the plugin has real skills.
+
+### Skill frontmatter
+
+```markdown
+---
+name: skill-name
+description: Third-person WHAT + WHEN with trigger keywords.
+---
+```
+
+The `description` drives auto-activation. Include explicit trigger phrases
+("Use when reviewing pull requests or when the user mentions code review").
+
+## After adding content
+
+1. **Bump `version`** in `plugins/<plugin>/.claude-plugin/plugin.json` (semver).
+   This is required — Claude Code uses the version string as the cache key.
+   Pushing commits without bumping the version has no effect for installed users.
+2. Commit and push.
+3. Teammates update with: `claude plugin update <plugin>@claude-standards`
+
+## Validating your plugin
+
+```bash
+claude plugin validate ./plugins/<plugin-name>
+claude plugin validate ./plugins/<plugin-name> --strict
+```
+
+## Adding a new plugin (new team or domain)
 
 1. Create `plugins/<name>/.claude-plugin/plugin.json` (copy an existing one).
-2. Create `plugins/<name>/skills/` and add at least one skill.
-3. Register it in `.claude-plugin/marketplace.json` under `plugins`.
+2. Create `plugins/<name>/skills/` with at least one skill.
+3. Register it in `.claude-plugin/marketplace.json` under `plugins` with `"strict": false`.
 
 ## Naming conventions
 
-- Plugins, skills, commands, agents: **kebab-case**.
-- Descriptions: third person, include trigger keywords so skills activate at the
-  right time.
-
-## Before you commit
-
-- Validate JSON: every `plugin.json` and `marketplace.json` must be valid JSON.
-- Each skill folder must contain a `SKILL.md`.
+All plugin names, skill folder names, agent file names: **kebab-case**.
