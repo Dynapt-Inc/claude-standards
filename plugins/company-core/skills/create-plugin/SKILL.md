@@ -1,6 +1,7 @@
 ---
 name: create-plugin
-description: Standards for contributing plugins, skills, agents, and hooks to the Dynapt claude-standards repository. Use when a contributor asks how to add a standard, skill, rule, command, or agent to this repo, or when authoring or validating a new plugin.
+description: Enforces Dynapt standards for creating a new plugin in this repo. Use when a contributor asks how to create a plugin, add a new plugin folder, register a plugin in the marketplace, or scaffold a new team's plugin.
+when_to_use: Triggers on "new plugin", "add plugin", "create plugin", "register plugin", "scaffold plugin", "add a team plugin".
 ---
 
 # Plugin Authoring Standards
