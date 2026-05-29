@@ -14,42 +14,48 @@
       "source": "./plugins/company-core",
       "description": "Baseline everyone installs: brand voice, communication standards, security & confidentiality rules, and shared glossary.",
       "category": "core",
-      "tags": ["core", "brand", "security", "communication"]
+      "tags": ["core", "brand", "security", "communication"],
+      "strict": false
     },
     {
       "name": "engineering",
       "source": "./plugins/engineering",
       "description": "Coding standards, code review, testing, git/PR workflow, and secure coding for software engineers.",
       "category": "engineering",
-      "tags": ["coding", "code-review", "testing", "git", "security"]
+      "tags": ["coding", "code-review", "testing", "git", "security"],
+      "strict": false
     },
     {
       "name": "architecture",
       "source": "./plugins/architecture",
       "description": "System design, architecture decision records (ADRs), and technology selection guidance.",
       "category": "engineering",
-      "tags": ["architecture", "system-design", "adr"]
+      "tags": ["architecture", "system-design", "adr"],
+      "strict": false
     },
     {
       "name": "marketing",
       "source": "./plugins/marketing",
       "description": "Content writing, SEO, campaign briefs, and social copy that stay on-brand.",
       "category": "marketing",
-      "tags": ["marketing", "content", "seo", "social"]
+      "tags": ["marketing", "content", "seo", "social"],
+      "strict": false
     },
     {
       "name": "product",
       "source": "./plugins/product",
       "description": "Product requirements docs, user stories, and release notes.",
       "category": "product",
-      "tags": ["product", "prd", "user-stories"]
+      "tags": ["product", "prd", "user-stories"],
+      "strict": false
     },
     {
       "name": "data",
       "source": "./plugins/data",
       "description": "SQL standards, analysis methodology, and dashboard/reporting conventions.",
       "category": "data",
-      "tags": ["data", "sql", "analytics"]
+      "tags": ["data", "sql", "analytics"],
+      "strict": false
     }
   ]
 }

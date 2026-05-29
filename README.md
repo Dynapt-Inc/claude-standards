@@ -12,7 +12,7 @@ context; slash commands and agents are invoked explicitly.
 In Claude Code:
 
 ```
-/plugin marketplace add dynapt/claude-standards
+/plugin marketplace add Dynapt-Inc/claude-standards
 /plugin install company-core@claude-standards
 ```
 
@@ -26,7 +26,7 @@ Then install whichever team plugins you need:
 /plugin install data@claude-standards
 ```
 
-> Replace `dynapt/claude-standards` with the real GitHub `org/repo` once this
+> Replace `Dynapt-Inc/claude-standards` with the real GitHub `org/repo` once this
 > is pushed. It appears here and in `.claude-plugin/marketplace.json`
 > + each `plugins/*/.claude-plugin/plugin.json` (author email).
 
