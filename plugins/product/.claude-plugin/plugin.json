@@ -1,10 +1,10 @@
 {
   "name": "product",
   "version": "1.0.0",
-  "description": "Product requirements docs, user stories, and release notes.",
+  "description": "Placeholder",
   "author": {
-    "name": "Dynapt AI Platform Team",
-    "email": "ai-platform@dynapt.com"
+    "name": "Caleb Lawson",
+    "email": "caleb.lawson@dynapt.com"
   },
   "keywords": ["product", "prd", "user-stories"]
 }
