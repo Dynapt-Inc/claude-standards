@@ -1,5 +1,5 @@
 ---
-name: plugin-authoring
+name: create-plugin
 description: Standards for contributing plugins, skills, agents, and hooks to the Dynapt claude-standards repository. Use when a contributor asks how to add a standard, skill, rule, command, or agent to this repo, or when authoring or validating a new plugin.
 ---
 
@@ -30,14 +30,34 @@ plugins/<plugin>/
 
 ## Which plugin does this belong in?
 
-| Domain | Plugin |
-|---|---|
+| Domain                              | Plugin         |
+| ----------------------------------- | -------------- |
 | Cross-cutting / applies to everyone | `company-core` |
-| Writing code, PRs, testing, git | `engineering` |
+| Writing code, PRs, testing, git     | `engineering`  |
 | System design, ADRs, tech decisions | `architecture` |
-| Content, SEO, social, campaigns | `marketing` |
-| PRDs, user stories, release notes | `product` |
-| SQL, analysis, dashboards | `data` |
+| Content, SEO, social, campaigns     | `marketing`    |
+| PRDs, user stories, release notes   | `product`      |
+| SQL, analysis, dashboards           | `data`         |
+
+## Naming standard
+
+Plugin and skill names must describe the **action performed**, not the subject area or concept.
+
+Use a verb or verb phrase that answers "what does this do right now?"
+
+| Bad (concept/noun) | Good (action/verb) |
+|---|---|
+| `plugin-authoring` | `create-plugin` |
+| `code-standards` | `review-code` |
+| `branch-workflow` | `create-branch` |
+| `seo` | `optimize-seo` |
+| `onboarding` | `onboard-employee` |
+| `release` | `write-release-notes` |
+
+**Rules:**
+- Start with a verb: `create-`, `review-`, `write-`, `generate-`, `analyze-`, `optimize-`, `run-`, etc.
+- Kebab-case, no spaces
+- Specific enough that two people independently name the same skill the same thing
 
 ## Adding a skill
 
@@ -55,9 +75,11 @@ description: Third-person. WHAT it does + WHEN Claude should activate it.
 # Skill Title
 
 ## Instructions
+
 ...your standard/rule/workflow...
 
 ## Additional resources
+
 - [reference.md](reference.md)
 ```
 
@@ -138,6 +160,7 @@ Claude Code uses the version string as the cache key.
 ```
 
 Follow semver:
+
 - `PATCH` — wording fixes, reference file changes
 - `MINOR` — new skills or agents
 - `MAJOR` — renamed/removed skills (breaking for namespaced invocations)
@@ -162,6 +185,7 @@ claude plugin validate ./plugins/<plugin-name> --strict
 ```
 
 Run this before committing. Common errors:
+
 - `name: Required` — missing name in plugin.json
 - `No commands found in ... Expected .md files or SKILL.md in subdirectories` — empty or wrong-format skill dir
 - `conflicting manifests` — component paths set in both plugin.json and marketplace.json when strict: false
@@ -176,13 +200,17 @@ for script paths and wrap it in quotes:
 ```json
 {
   "hooks": {
-    "PostToolUse": [{
-      "matcher": "Write|Edit",
-      "hooks": [{
-        "type": "command",
-        "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/validate.sh"
-      }]
-    }]
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/validate.sh"
+          }
+        ]
+      }
+    ]
   }
 }
 ```

@@ -8,7 +8,9 @@ description: TEMPLATE — replace this. Describe in third person WHAT this skill
 This is a placeholder so you can see the required format. To add one of your
 existing standards/skills:
 
-1. Copy this `example-skill/` folder and rename it (kebab-case, e.g. `code-review`).
+1. Copy this `example-skill/` folder and rename it using an action verb (kebab-case).
+   Name the skill after what it **does**, not what it's about.
+   e.g. `review-code`, `create-branch`, `write-release-notes` — NOT `code-standards`, `branching`, `releases`.
 2. Update the `name` and `description` in the frontmatter above.
 3. Replace this body with your standard/rule content.
 4. Delete this `example-skill/` folder once you have real skills.
