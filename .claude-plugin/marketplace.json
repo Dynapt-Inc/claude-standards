@@ -1,0 +1,55 @@
+{
+  "name": "claude-standards",
+  "owner": {
+    "name": "Dynapt",
+    "email": "ai-platform@dynapt.com"
+  },
+  "metadata": {
+    "description": "Company-wide standards, skills, and rules for using Claude across every team: engineering, architecture, marketing, product, and data.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "company-core",
+      "source": "./plugins/company-core",
+      "description": "Baseline everyone installs: brand voice, communication standards, security & confidentiality rules, and shared glossary.",
+      "category": "core",
+      "tags": ["core", "brand", "security", "communication"]
+    },
+    {
+      "name": "engineering",
+      "source": "./plugins/engineering",
+      "description": "Coding standards, code review, testing, git/PR workflow, and secure coding for software engineers.",
+      "category": "engineering",
+      "tags": ["coding", "code-review", "testing", "git", "security"]
+    },
+    {
+      "name": "architecture",
+      "source": "./plugins/architecture",
+      "description": "System design, architecture decision records (ADRs), and technology selection guidance.",
+      "category": "engineering",
+      "tags": ["architecture", "system-design", "adr"]
+    },
+    {
+      "name": "marketing",
+      "source": "./plugins/marketing",
+      "description": "Content writing, SEO, campaign briefs, and social copy that stay on-brand.",
+      "category": "marketing",
+      "tags": ["marketing", "content", "seo", "social"]
+    },
+    {
+      "name": "product",
+      "source": "./plugins/product",
+      "description": "Product requirements docs, user stories, and release notes.",
+      "category": "product",
+      "tags": ["product", "prd", "user-stories"]
+    },
+    {
+      "name": "data",
+      "source": "./plugins/data",
+      "description": "SQL standards, analysis methodology, and dashboard/reporting conventions.",
+      "category": "data",
+      "tags": ["data", "sql", "analytics"]
+    }
+  ]
+}

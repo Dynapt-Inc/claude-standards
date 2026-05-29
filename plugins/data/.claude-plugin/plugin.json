@@ -1,0 +1,10 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "description": "SQL standards, analysis methodology, and dashboard/reporting conventions.",
+  "author": {
+    "name": "Dynapt AI Platform Team",
+    "email": "ai-platform@dynapt.com"
+  },
+  "keywords": ["data", "sql", "analytics"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "engineering",
+  "version": "1.0.0",
+  "description": "Coding standards, code review, testing, git/PR workflow, and secure coding for software engineers.",
+  "author": {
+    "name": "Dynapt AI Platform Team",
+    "email": "ai-platform@dynapt.com"
+  },
+  "keywords": ["coding", "code-review", "testing", "git", "security"]
+}
