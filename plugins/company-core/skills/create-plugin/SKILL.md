@@ -4,230 +4,146 @@ description: Enforces Dynapt standards for creating a new plugin in this repo. U
 when_to_use: Triggers on "new plugin", "add plugin", "create plugin", "register plugin", "scaffold plugin", "add a team plugin".
 ---
 
-# Plugin Authoring Standards
+# Create a Plugin
 
-This repo is a Claude Code plugin marketplace. Every standard, rule, or workflow
-lives as a **skill** inside a plugin under `plugins/`.
+## Naming rule (enforced)
 
-## Plugin directory layout
+Plugin folder names and `name` in `plugin.json` must be an **action-oriented
+noun** describing the team or domain — short, lowercase, kebab-case.
 
-```
-plugins/<plugin>/
-├── .claude-plugin/
-│   └── plugin.json        # manifest (name is the only required field)
-├── skills/                # one subdirectory per skill
-│   └── <skill-name>/
-│       ├── SKILL.md       # required
-│       └── reference.md   # optional long-form detail
-├── agents/                # optional subagent .md files
-├── hooks/
-│   └── hooks.json         # optional event handlers
-├── .mcp.json              # optional MCP servers
-└── scripts/               # optional hook/utility scripts
-```
-
-> Do NOT create a `commands/` directory — that format is legacy. Use `skills/` only.
-> Only `plugin.json` belongs inside `.claude-plugin/`. All other dirs go at plugin root.
-
-## Which plugin does this belong in?
-
-| Domain                              | Plugin         |
-| ----------------------------------- | -------------- |
-| Cross-cutting / applies to everyone | `company-core` |
-| Writing code, PRs, testing, git     | `engineering`  |
-| System design, ADRs, tech decisions | `architecture` |
-| Content, SEO, social, campaigns     | `marketing`    |
-| PRDs, user stories, release notes   | `product`      |
-| SQL, analysis, dashboards           | `data`         |
-
-## Naming standard
-
-Plugin and skill names must describe the **action performed**, not the subject area or concept.
-
-Use a verb or verb phrase that answers "what does this do right now?"
-
-| Bad (concept/noun) | Good (action/verb) |
+| Bad | Good |
 |---|---|
-| `plugin-authoring` | `create-plugin` |
-| `code-standards` | `review-code` |
-| `branch-workflow` | `create-branch` |
-| `seo` | `optimize-seo` |
-| `onboarding` | `onboard-employee` |
-| `release` | `write-release-notes` |
+| `engineering-standards` | `engineering` |
+| `my-teams-plugin` | `data` |
+| `claudeRules` | `marketing` |
 
-**Rules:**
-- Start with a verb: `create-`, `review-`, `write-`, `generate-`, `analyze-`, `optimize-`, `run-`, etc.
-- Kebab-case, no spaces
-- Specific enough that two people independently name the same skill the same thing
-
-## Adding a skill
-
-1. Create `plugins/<plugin>/skills/<skill-name>/` (kebab-case).
-2. Add `SKILL.md`:
-
-```markdown
----
-name: skill-name
-description: Third-person. WHAT it does + WHEN Claude should activate it.
-  Include explicit trigger phrases ("Use when reviewing pull requests or
-  when the user mentions code review").
 ---
 
-# Skill Title
-
-## Instructions
-
-...your standard/rule/workflow...
-
-## Additional resources
-
-- [reference.md](reference.md)
-```
-
-3. Keep `SKILL.md` under ~300 lines. Long reference material goes in a sibling
-   file (e.g. `reference.md`) — link to it, don't inline it.
-4. Remove `example-skill/` from a plugin once you have real skills.
-
-### Description rules (critical)
-
-The description controls auto-activation. Write it carefully.
-
-- **Third person** — "Reviews pull requests..." not "I can review..."
-- **Include WHAT and WHEN** with explicit trigger keywords
+## Step 1 — Scaffold the directory
 
 ```
-# Good
-Enforces Dynapt code review standards. Use when reviewing a pull request,
-examining a diff, or when the user asks for a code review.
-
-# Bad
-Helps with code.
+plugins/<plugin-name>/
+├── .claude-plugin/
+│   └── plugin.json     ← manifest
+├── skills/             ← add skills here (see create-skill)
+└── agents/             ← optional subagent .md files
 ```
 
-## Adding an agent
+Rules:
+- Only `plugin.json` goes inside `.claude-plugin/`. Everything else at plugin root.
+- Do NOT create a `commands/` directory — that format is legacy.
+- Do NOT add `hooks/`, `agents/`, `.mcp.json` unless the plugin actually uses them.
 
-Create `plugins/<plugin>/agents/<agent-name>.md`:
-
-```markdown
----
-name: agent-name
-description: What this agent specializes in and when Claude should invoke it
-model: sonnet
-effort: medium
-maxTurns: 20
-disallowedTools: Write, Edit
 ---
 
-Detailed system prompt describing the agent's role and behavior.
-```
+## Step 2 — Write plugin.json
 
-Supported frontmatter fields: `name`, `description`, `model`, `effort`,
-`maxTurns`, `tools`, `disallowedTools`, `skills`, `memory`, `background`,
-`isolation` (only valid value: `"worktree"`).
-
-Not supported in plugin agents: `hooks`, `mcpServers`, `permissionMode`.
-
-## plugin.json manifest
-
-`name` is the only required field. Full schema:
+`name` is the only required field. Use this template:
 
 ```json
 {
   "name": "plugin-name",
   "displayName": "Human Readable Name",
-  "version": "1.2.0",
-  "description": "Brief plugin description",
-  "author": { "name": "...", "email": "..." },
-  "homepage": "https://...",
-  "repository": "https://github.com/...",
-  "license": "MIT",
-  "keywords": ["keyword1"]
+  "version": "1.0.0",
+  "description": "One sentence description.",
+  "author": {
+    "name": "Caleb Lawson",
+    "email": "caleb.lawson@dynapt.com"
+  },
+  "keywords": ["keyword1", "keyword2"]
 }
 ```
 
-Do not add component path fields (`skills`, `commands`, `agents`) unless you
-need to override default locations — and if you do, all paths must start with
-`./`. Adding component paths when `strict: false` is set in `marketplace.json`
-will cause a conflict error.
+Do NOT add `skills`, `commands`, or `agents` path fields unless overriding
+default locations. All custom paths must start with `./`. Adding component
+paths when `strict: false` is set in `marketplace.json` causes a conflict error.
 
-## Versioning (important)
+---
 
-**Because `version` is set in each `plugin.json`, you MUST bump it for
-teammates to receive your changes.** Pushing commits alone is not enough —
-Claude Code uses the version string as the cache key.
+## Step 3 — Register in marketplace.json
+
+Add an entry to `.claude-plugin/marketplace.json` under `plugins`:
 
 ```json
-"version": "1.1.0"
+{
+  "name": "plugin-name",
+  "source": "./plugins/plugin-name",
+  "description": "One sentence description.",
+  "category": "category",
+  "tags": ["tag1", "tag2"],
+  "strict": false
+}
 ```
 
+Valid categories: `core`, `engineering`, `marketing`, `product`, `data`.
+
+---
+
+## Step 4 — Add at least one skill
+
+Every plugin must have at least one real skill before merging.
+See the [create-skill](../create-skill/SKILL.md) standard for how to write it.
+
+---
+
+## Versioning (enforced)
+
+Because `version` is set in `plugin.json`, **you MUST bump it for teammates
+to receive your changes.** Pushing commits without bumping has no effect —
+Claude Code uses the version string as the cache key.
+
 Follow semver:
+- `PATCH` — wording/reference file fixes
+- `MINOR` — new skills or agents added
+- `MAJOR` — skills renamed or removed (breaks namespaced invocations)
 
-- `PATCH` — wording fixes, reference file changes
-- `MINOR` — new skills or agents
-- `MAJOR` — renamed/removed skills (breaking for namespaced invocations)
+To iterate quickly without bumping, temporarily remove `version` from
+`plugin.json` — Claude Code falls back to the git commit SHA.
 
-If you're iterating rapidly, you can temporarily remove `version` from
-`plugin.json` so every commit is treated as a new version (git SHA is used).
-
-## Path rules
-
-- All custom paths in `plugin.json` must be relative and start with `./`
-- No path traversal outside the plugin directory (`../` won't work after caching)
-- `skills` field **adds to** the default `skills/` scan; it doesn't replace it
-- `commands`, `agents` fields **replace** the default directory scan
+---
 
 ## Validating your plugin
 
 ```bash
 claude plugin validate ./plugins/<plugin-name>
 
-# Strict mode — treats warnings (e.g. unrecognised fields) as errors
+# Strict mode — warnings become errors
 claude plugin validate ./plugins/<plugin-name> --strict
 ```
 
-Run this before committing. Common errors:
-
+Run before committing. Common errors:
 - `name: Required` — missing name in plugin.json
-- `No commands found in ... Expected .md files or SKILL.md in subdirectories` — empty or wrong-format skill dir
-- `conflicting manifests` — component paths set in both plugin.json and marketplace.json when strict: false
+- `Plugin directory not found` — wrong `source` path in marketplace.json
+- `conflicting manifests` — component path fields set in both plugin.json and marketplace.json with `strict: false`
 
-For deeper debugging: `claude --debug`
+---
 
-## Hooks (optional)
+## Optional: agents
 
-Add `hooks/hooks.json` to the plugin root. Always use `${CLAUDE_PLUGIN_ROOT}`
-for script paths and wrap it in quotes:
+Add `.md` files to `agents/`:
 
-```json
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/validate.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
+```markdown
+---
+name: agent-name
+description: What this agent does and when Claude should invoke it
+model: sonnet
+effort: medium
+maxTurns: 20
+disallowedTools: Write, Edit
+---
+
+System prompt for the agent.
 ```
 
-Hook types: `command`, `http`, `mcp_tool`, `prompt`, `agent`.
-Hook scripts must be executable (`chmod +x`).
+Supported frontmatter: `name`, `description`, `model`, `effort`, `maxTurns`,
+`tools`, `disallowedTools`, `skills`, `memory`, `background`, `isolation`
+(`"worktree"` only).
 
-## After adding content
+Not supported in plugin agents: `hooks`, `mcpServers`, `permissionMode`.
 
-1. Bump `version` in `plugins/<plugin>/.claude-plugin/plugin.json`.
-2. Commit and push.
-3. Teammates run: `claude plugin update <plugin>@claude-standards`
+---
 
 ## See also
 
+- [create-skill](../create-skill/SKILL.md) — how to write skills inside a plugin
 - [Plugins reference](https://code.claude.com/docs/en/plugins-reference)
-- [Skills](https://code.claude.com/docs/en/skills)
-- [Subagents](https://code.claude.com/docs/en/sub-agents)
-- [Hooks](https://code.claude.com/docs/en/hooks)
